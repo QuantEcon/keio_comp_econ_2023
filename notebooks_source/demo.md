@@ -367,6 +367,11 @@ Let's see what we have available.
 ```
 
 
+
+#### Replacing NumPy with JAX
+
+For this step we replace `np` with `jnp`, which is our alias for `jax.numpy`
+
 Warning --- you need a GPU with relatively large memory for this to work.
 
 
@@ -390,16 +395,15 @@ Here's our timing.
 jnp.max(f(x, y))
 ```
 
-
-```{code-cell} ipython3
-@jax.jit
-def f(x, y):
-    return jnp.cos(x**2 + y**2) / (1 + x**2 + y**2) + 1
-```
+#### JIT Compiling the Function
 
 Let's JIT-compile the function and see if anything changes.
 
 ```{code-cell} ipython3
+f = jax.jit(f)
+```
+
+```{code-cell} ipython3
 %%time
 
 jnp.max(f(x, y))
@@ -410,6 +414,31 @@ jnp.max(f(x, y))
 %%time
 
 jnp.max(f(x, y))
+```
+
+#### JIT Compiling the Whole Routine
+
+Now let's JIT-compile the function and the optimization routine.
+
+```{code-cell} ipython3
+def max_on_grid(func, grid_size=10_000):
+    grid = jnp.linspace(-3, 3, 10000)
+    x, y = jnp.meshgrid(grid, grid)
+    return jnp.max(func(x, y))
+```
+
+```{code-cell} ipython3
+max_on_grid = jax.jit(max_on_grid, static_argnums=(0,))
+```
+
+```{code-cell} ipython3
+%%time
+max_on_grid(f)
+```
+
+```{code-cell} ipython3
+%%time
+max_on_grid(f)
 ```
 
 
@@ -620,4 +649,38 @@ compute_mean_jax_jitted()
 %%time
 
 compute_mean_jax_jitted()
+```
+
+
+## Exercise
+
+
+```{code-cell} ipython3
+@njit
+def quad_time_series(x0, n=10_000_000, α=4.0):
+    x = np.empty(n)
+    x[0] = x0
+    for t in range(n-1):
+        x[t+1] = α * x[t] * (1 - x[t])
+    return x
+```
+
+Compile:
+
+```{code-cell} ipython3
+x = quad_time_series(0.1, n=10)
+```
+
+Run
+
+
+```{code-cell} ipython3
+x = quad_time_series(0.1)
+```
+
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+ax.hist(x, bins=1_000)
+plt.show()
 ```

@@ -142,8 +142,11 @@ END PROGRAM MAIN
 !./a.out
 ```
 
+Tidy up
+
 ```{code-cell} ipython3
 !rm a.out
+!rm fortran_quad.f90
 ```
 
 ### Codon
@@ -197,16 +200,12 @@ Tidying up:
 
 ```{code-cell} ipython3
 !rm codon_quad
-```
-
-```{code-cell} ipython3
-
+!rm codon_quad.py
 ```
 
 
 ### Python + Numba
 
-+++
 
 Now let's replicate the calculations using Numba's JIT compiler.
 

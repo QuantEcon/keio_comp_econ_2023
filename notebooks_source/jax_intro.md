@@ -620,7 +620,7 @@ def gradient_ascent(f, f_grad, x_0, tol=1e-8, alpha=1e-2, max_iter=10_000):
     error = tol + 1
     x = x_0
     i = 0
-    current_max = - jpn.inf
+    current_max = - jnp.inf
     while error > tol and i < max_iter:
         y = update_vec(x, f, f_grad)
         new_max = jnp.max(jax.vmap(f)(x))

@@ -62,14 +62,10 @@ import matplotlib.pyplot as plt
 ```
 
 
-Let’s check the backend used by JAX and the devices available
+Let’s check that we're hooked up to a GPU.
 
 ```{code-cell} ipython3
-# Check if JAX is using GPU
-print(f"JAX backend: {jax.devices()[0].platform}")
-
-# Check the devices available for JAX
-print(jax.devices())
+!nvidia-smi
 ```
 
 
@@ -142,7 +138,6 @@ Bellman equation (before maximization), which is a 3D array representing:
 
 $$
   B(y, z, y') = r(y, z, y') + \beta \sum_{z'} v(y', z') Q(z, z')
-
 $$
 
 for all $(y, z, y')$.
@@ -284,9 +279,11 @@ $$
         v_{\sigma} = (I - \beta P_{\sigma})^{-1} r_{\sigma}
 $$
 
-Here we set up the linear map $v$ -> $R_{\sigma} v$,
+Here we set up the linear map $v \mapsto R_{\sigma} v$, where 
 
-where $R_{\sigma} := I - \beta P_{\sigma}$
+$$
+    R_{\sigma} := I - \beta P_{\sigma}
+$$
 
 In the investment problem, this map can be expressed as
 

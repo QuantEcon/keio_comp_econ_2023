@@ -48,6 +48,7 @@ We will show how to accelerate this operation.
 To begin, let's set $\alpha = 4$
 
 
+
 ```{code-cell} ipython3
 α = 4
 ```
@@ -565,23 +566,6 @@ Let's test it and see how long it takes.
 compute_mean()
 ```
 
-### Using Numba's JIT Compiler
-
-```{code-cell} ipython3
-compute_mean_numba = numba.jit(compute_mean)
-```
-
-```{code-cell} ipython3
-%%time
-
-compute_mean_numba()
-```
-
-```{code-cell} ipython3
-%%time
-
-compute_mean_numba()
-```
 
 ### A Vectorized Routine
 
@@ -604,6 +588,7 @@ def compute_mean_vectorized(n=10_000_000):
 
 compute_mean_vectorized()
 ```
+
 
 ### Using Google JAX
 
@@ -654,8 +639,54 @@ compute_mean_jax_jitted()
 ## Exercise
 
 
+Use the quadratic map
+
+$$ x_{t+1} = 4 x_t (1 - x_t) $$
+
+to generate a time series of length `10_000_000` and histogram it with `bins=100`.
+
+(Look up how to histogram in Matplotlib.)
+
+If you can, accelerate your code with `@numba.jit`.
+
+What kind of histogram to do you get?
+
+
+
 ```{code-cell} ipython3
-@njit
+# Put your code here
+```
+
+solution below
+
+solution below
+
+solution below
+
+solution below
+
+solution below
+
+solution below
+
+solution below
+
+solution below
+
+solution below
+
+solution below
+
+solution below
+
+solution below
+
+
+
+
+
+```{code-cell} ipython3
+@numba.jit
 def quad_time_series(x0, n=10_000_000, α=4.0):
     x = np.empty(n)
     x[0] = x0
@@ -680,6 +711,7 @@ x = quad_time_series(0.1)
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.hist(x, bins=1_000)
+ax.hist(x, bins=100, density=True)
 plt.show()
 ```
+
